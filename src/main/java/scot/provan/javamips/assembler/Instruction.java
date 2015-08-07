@@ -8,10 +8,15 @@ public class Instruction {
     //                      332222_22222_21111_11111_10000_000000
     //                    0b109876_54321_09876_54321_09876_543210
     static int RS       = 0b000000_11111_00000_00000_00000_000000; // RS mask
+    static int RS_SHIFT = 21;
     static int RT       = 0b000000_00000_11111_00000_00000_000000; // RT mask
+    static int RT_SHIFT = 16;
     static int RD       = 0b000000_00000_00000_11111_00000_000000; // RD mask
+    static int RD_SHIFT = 11;
     static int SHAMT    = 0b000000_00000_00000_00000_11111_000000; // Shift amount mask
+    static int SHAMT_SHIFT = 6;
     static int FUNCT    = 0b000000_00000_00000_00000_00000_111111; // Function mask
+    static int FUNCT_SHIFT = 0;
     // R Type               OPCODE  RS    RT    RD   SHAMT  FUNCT
     static int ADD      = 0b000000_00000_00000_00000_00000_100000; // Add
     static int ADDU     = 0b000000_00000_00000_00000_00000_100001; // Add unsigned
@@ -41,6 +46,7 @@ public class Instruction {
     //                      332222_22222_21111_1111110000000000
     //                    0b109876_54321_09876_5432109876543210
     static int IMMEDIATE= 0b000000_00000_00000_1111111111111111; // Immediate mask
+    static int IMMEDIATE_SHIFT = 0;
     // I Type               OPCODE  RS    RT    IMMEDIATE
     static int ADDI     = 0b001000_00000_00000_0000000000000000; // Add immediate
     static int ADDIU    = 0b001001_00000_00000_0000000000000000; // Add immediate unsigned
@@ -62,6 +68,7 @@ public class Instruction {
     //                      332222_22222211111111110000000000
     //                    0b109876_54321098765432109876543210
     static int ADDRESS  = 0b000000_11111111111111111111111111; // Address mask
+    static int ADDRESS_SHIFT = 0;
     // J Type               OPCODE  ADDRESS
     static int J        = 0b000010_00000000000000000000000000; // Jump
     static int JAL      = 0b000011_00000000000000000000000000; // Jump and link
