@@ -8,7 +8,7 @@ public class Assembler {
         Lexer.setUp();
         Token t;
         while ((t = Lexer.lex()) != null) {
-            System.out.println(t);
+            System.out.println(t.getInfo());
         }
     }
 }

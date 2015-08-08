@@ -16,6 +16,15 @@ public class Token {
         this.charEnd = charEnd;
     }
 
+    public String getInfo() {
+        return String.format("%s - \"%s\" on line: %d between char: %d and %d",
+                this.getClass().getSimpleName(),
+                this.original,
+                this.lineNo,
+                this.charStart,
+                this.charEnd);
+    }
+
     public static class IdentToken extends Token {
         public IdentToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);
@@ -49,15 +58,51 @@ public class Token {
         }
     }
 
+    public static class CommaToken extends Token {
+        public CommaToken(String original, int lineNo, int charStart, int charEnd) {
+            super(original, lineNo, charStart, charEnd);
+        }
+    }
+
+    public static class PlusToken extends Token {
+        public PlusToken(String original, int lineNo, int charStart, int charEnd) {
+            super(original, lineNo, charStart, charEnd);
+        }
+    }
+
+    public static class MinusToken extends Token {
+        public MinusToken(String original, int lineNo, int charStart, int charEnd) {
+            super(original, lineNo, charStart, charEnd);
+        }
+    }
+
+    public static class LeftParenToken extends Token {
+        public LeftParenToken(String original, int lineNo, int charStart, int charEnd) {
+            super(original, lineNo, charStart, charEnd);
+        }
+    }
+
+    public static class RightParenToken extends Token {
+        public RightParenToken(String original, int lineNo, int charStart, int charEnd) {
+            super(original, lineNo, charStart, charEnd);
+        }
+    }
+
     public static class NumberToken extends Token {
         private int value;
         public NumberToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);
-            if (original.charAt(1) == 'x') {
-                this.value = Integer.parseInt(original, 16);
+            if (original.length() > 2 && original.charAt(1) == 'x') {
+                this.value = Integer.parseInt(original.substring(2), 16);
             } else {
                 this.value = Integer.parseInt(original);
             }
+        }
+
+        public String getInfo() {
+            return String.format("%s, with number value: %s",
+                    super.getInfo(),
+                    String.valueOf(this.value));
         }
     }
 
@@ -65,7 +110,29 @@ public class Token {
         private String value;
         public StringToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);
-            this.value = original.substring(1, original.length() - 2);
+            String unescaped = Lexer.unescapeJavaString(original);
+            this.value = unescaped.substring(1, unescaped.length() - 1);
+        }
+
+        public String getInfo() {
+            return String.format("%s, with string value: %s",
+                    super.getInfo(),
+                    this.value);
+        }
+    }
+
+    public static class CharToken extends Token {
+        private char value;
+        public CharToken(String original, int lineNo, int charStart, int charEnd) {
+            super(original, lineNo, charStart, charEnd);
+            String unescaped = Lexer.unescapeJavaString(original);
+            this.value = unescaped.charAt(1);
+        }
+
+        public String getInfo() {
+            return String.format("%s, with string value: %s",
+                    super.getInfo(),
+                    String.valueOf(this.value));
         }
     }
 
@@ -82,8 +149,16 @@ public class Token {
     }
 
     public static class JTypeInstructionToken extends InstructionToken {
-        public JTypeInstructionToken(String original, int lineNo, int charStart, int charEnd, int opcode) {
+        private JTypeInstructionToken(String original, int lineNo, int charStart, int charEnd, int opcode) {
             super(original, lineNo, charStart, charEnd, opcode);
+        }
+    }
+
+    public static class RegisterToken extends Token {
+        private int register;
+        private RegisterToken(String original, int lineNo, int charStart, int charEnd, int register) {
+            super(original, lineNo, charStart, charEnd);
+            this.register = register;
         }
     }
 
@@ -108,5 +183,13 @@ public class Token {
             }
         }
         return null;
+    }
+
+    public static Token createRegisterToken(String original, int lineNo, int charStart, int charEnd) {
+        if (Register.R.containsKey(original)) {
+            return new RegisterToken(original, lineNo, charStart, charEnd, Register.R.get(original));
+        } else {
+            return null;
+        }
     }
 }
