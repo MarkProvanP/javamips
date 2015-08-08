@@ -55,5 +55,17 @@ public class TestInstruction {
         assertEquals(0x2B, Instruction.getOpcodeShifted(Instruction.SW));
         assertEquals(0x29, Instruction.getOpcodeShifted(Instruction.SH));
         assertEquals(0x28, Instruction.getOpcodeShifted(Instruction.SB));
+        assertEquals(0x0F, Instruction.getOpcodeShifted(Instruction.LUI));
+        assertEquals(0x0C, Instruction.getOpcodeShifted(Instruction.ANDI));
+        assertEquals(0x0D, Instruction.getOpcodeShifted(Instruction.ORI));
+        assertEquals(0x0A, Instruction.getOpcodeShifted(Instruction.SLTI));
+        assertEquals(0x04, Instruction.getOpcodeShifted(Instruction.BEQ));
+        assertEquals(0x05, Instruction.getOpcodeShifted(Instruction.BNE));
+    }
+
+    @Test
+    public void testJTypeOpcodes() {
+        assertEquals(0x02, Instruction.getOpcodeShifted(Instruction.J));
+        assertEquals(0x03, Instruction.getOpcodeShifted(Instruction.JAL));
     }
 }
