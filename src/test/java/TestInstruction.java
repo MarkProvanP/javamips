@@ -34,5 +34,26 @@ public class TestInstruction {
         assertEquals(0x26, Instruction.getFunctShifted(Instruction.XOR));
         assertEquals(0x27, Instruction.getFunctShifted(Instruction.NOR));
         assertEquals(0x2A, Instruction.getFunctShifted(Instruction.SLT));
+        assertEquals(0x00, Instruction.getFunctShifted(Instruction.SLL));
+        assertEquals(0x02, Instruction.getFunctShifted(Instruction.SRL));
+        assertEquals(0x03, Instruction.getFunctShifted(Instruction.SRA));
+        assertEquals(0x04, Instruction.getFunctShifted(Instruction.SLLV));
+        assertEquals(0x06, Instruction.getFunctShifted(Instruction.SRLV));
+        assertEquals(0x07, Instruction.getFunctShifted(Instruction.SRAV));
+        assertEquals(0x08, Instruction.getFunctShifted(Instruction.JR));
+    }
+
+    @Test
+    public void testITypeOpcodes() {
+        assertEquals(0x08, Instruction.getOpcodeShifted(Instruction.ADDI));
+        assertEquals(0x09, Instruction.getOpcodeShifted(Instruction.ADDIU));
+        assertEquals(0x23, Instruction.getOpcodeShifted(Instruction.LW));
+        assertEquals(0x21, Instruction.getOpcodeShifted(Instruction.LH));
+        assertEquals(0x25, Instruction.getOpcodeShifted(Instruction.LHU));
+        assertEquals(0x20, Instruction.getOpcodeShifted(Instruction.LB));
+        assertEquals(0x24, Instruction.getOpcodeShifted(Instruction.LBU));
+        assertEquals(0x2B, Instruction.getOpcodeShifted(Instruction.SW));
+        assertEquals(0x29, Instruction.getOpcodeShifted(Instruction.SH));
+        assertEquals(0x28, Instruction.getOpcodeShifted(Instruction.SB));
     }
 }

@@ -6,8 +6,8 @@ package scot.provan.javamips.assembler;
 public class Instruction {
     public static int OPCODE   = 0b111111_00000_00000_00000_00000_000000; // Opcode mask
     public static int OPCODE_SHIFT = 26;
-    //                      332222_22222_21111_11111_10000_000000
-    //                    0b109876_54321_09876_54321_09876_543210
+    //                             332222_22222_21111_11111_10000_000000
+    //                           0b109876_54321_09876_54321_09876_543210
     public static int RS       = 0b000000_11111_00000_00000_00000_000000; // RS mask
     public static int RS_SHIFT = 21;
     public static int RT       = 0b000000_00000_11111_00000_00000_000000; // RT mask
@@ -18,7 +18,7 @@ public class Instruction {
     public static int SHAMT_SHIFT = 6;
     public static int FUNCT    = 0b000000_00000_00000_00000_00000_111111; // Function mask
     public static int FUNCT_SHIFT = 0;
-    // R Type               OPCODE  RS    RT    RD   SHAMT  FUNCT
+    // R Type                     OPCODE  RS    RT    RD    SHAMT  FUNCT
     public static int ADD      = 0b000000_00000_00000_00000_00000_100000; // Add
     public static int ADDU     = 0b000000_00000_00000_00000_00000_100001; // Add unsigned
     public static int SUB      = 0b000000_00000_00000_00000_00000_100010; // Subtract
@@ -42,13 +42,13 @@ public class Instruction {
     public static int SLLV     = 0b000000_00000_00000_00000_00000_000100; // Shift left logical
     public static int SRLV     = 0b000000_00000_00000_00000_00000_000110; // Shift right logical
     public static int SRAV     = 0b000000_00000_00000_00000_00000_000111; // Shift right arithmetic
-    public static int JR       = 0b000000_00000_00000_00000_00000_000100; // Jump register
+    public static int JR       = 0b000000_00000_00000_00000_00000_001000; // Jump register
 
-    //                      332222_22222_21111_1111110000000000
-    //                    0b109876_54321_09876_5432109876543210
+    //                             332222_22222_21111_1111110000000000
+    //                           0b109876_54321_09876_5432109876543210
     public static int IMMEDIATE= 0b000000_00000_00000_1111111111111111; // Immediate mask
     public static int IMMEDIATE_SHIFT = 0;
-    // I Type               OPCODE  RS    RT    IMMEDIATE
+    // I Type                      OPCODE RS    RT    IMMEDIATE
     public static int ADDI     = 0b001000_00000_00000_0000000000000000; // Add immediate
     public static int ADDIU    = 0b001001_00000_00000_0000000000000000; // Add immediate unsigned
     public static int LW       = 0b100011_00000_00000_0000000000000000; // Load word
@@ -66,11 +66,11 @@ public class Instruction {
     public static int BEQ      = 0b000100_00000_00000_0000000000000000; // Branch on equal
     public static int BNE      = 0b000101_00000_00000_0000000000000000; // Branch on not equal
 
-    //                      332222_22222211111111110000000000
-    //                    0b109876_54321098765432109876543210
+    //                             332222_22222211111111110000000000
+    //                           0b109876_54321098765432109876543210
     public static int ADDRESS  = 0b000000_11111111111111111111111111; // Address mask
     public static int ADDRESS_SHIFT = 0;
-    // J Type               OPCODE  ADDRESS
+    // J Type                      OPCODE ADDRESS
     public static int J        = 0b000010_00000000000000000000000000; // Jump
     public static int JAL      = 0b000011_00000000000000000000000000; // Jump and link
 
