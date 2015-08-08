@@ -6,7 +6,7 @@ import java.util.HashMap;
  * Created by Mark on 07/08/2015.
  */
 public class Register {
-    static HashMap<String, Integer> R = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> R = new HashMap<String, Integer>();
 
     static {
         R.put("$zero",  0);

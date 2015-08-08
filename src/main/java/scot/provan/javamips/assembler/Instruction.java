@@ -1,5 +1,7 @@
 package scot.provan.javamips.assembler;
 
+import java.util.HashMap;
+
 /**
  * Created by Mark on 07/08/2015.
  */
@@ -136,5 +138,55 @@ public class Instruction {
 
     public static int addAddressShifted(int instruction, int addressShifted) {
         return instruction & (addressShifted << ADDRESS_SHIFT);
+    }
+
+    public static HashMap<String, Integer> RTypes = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> ITypes = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> JTypes = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> Instructions = new HashMap<String, Integer>();
+    static {
+        RTypes.put("add",   ADD);
+        RTypes.put("addu",  ADDU);
+        RTypes.put("sub",   SUB);
+        RTypes.put("subu",  SUBU);
+        RTypes.put("mult",  MULT);
+        RTypes.put("multu", MULTU);
+        RTypes.put("div",   DIV);
+        RTypes.put("divu",  DIVU);
+        RTypes.put("mfhi",  MFHI);
+        RTypes.put("mflo",  MFLO);
+        RTypes.put("and",   AND);
+        RTypes.put("or",    OR);
+        RTypes.put("xor",   XOR);
+        RTypes.put("nor",   NOR);
+        RTypes.put("slt",   SLT);
+        RTypes.put("sll",   SLL);
+        RTypes.put("srl",   SRL);
+        RTypes.put("sra",   SRA);
+        RTypes.put("sllv",  SLLV);
+        RTypes.put("srlv",  SRLV);
+        RTypes.put("srav",  SRAV);
+        RTypes.put("jr",    JR);
+        ITypes.put("addi",  ADDI);
+        ITypes.put("addiu", ADDIU);
+        ITypes.put("lw",    LW);
+        ITypes.put("lh",    LH);
+        ITypes.put("lhu",   LHU);
+        ITypes.put("lb",    LB);
+        ITypes.put("lbu",   LBU);
+        ITypes.put("sw",    SW);
+        ITypes.put("sh",    SH);
+        ITypes.put("sb",    SB);
+        ITypes.put("lui",   LUI);
+        ITypes.put("andi",  ANDI);
+        ITypes.put("ori",   ORI);
+        ITypes.put("slti",  SLTI);
+        ITypes.put("beq",   BEQ);
+        ITypes.put("bne",   BNE);
+        JTypes.put("j",     J);
+        JTypes.put("jal",   JAL);
+        Instructions.putAll(RTypes);
+        Instructions.putAll(ITypes);
+        Instructions.putAll(JTypes);
     }
 }
