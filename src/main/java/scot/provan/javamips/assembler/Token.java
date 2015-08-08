@@ -50,14 +50,22 @@ public class Token {
     }
 
     public static class NumberToken extends Token {
+        private int value;
         public NumberToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);
+            if (original.charAt(1) == 'x') {
+                this.value = Integer.parseInt(original, 16);
+            } else {
+                this.value = Integer.parseInt(original);
+            }
         }
     }
 
     public static class StringToken extends Token {
+        private String value;
         public StringToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);
+            this.value = original.substring(1, original.length() - 2);
         }
     }
 

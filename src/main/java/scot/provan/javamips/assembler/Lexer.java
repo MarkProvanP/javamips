@@ -31,7 +31,7 @@ public class Lexer {
             return (char) -1;
         }
     }
-    private static class LexerException extends Exception { }
+    public static class LexerException extends Exception { }
 
     private static LexSource lxb;
     private static boolean setUp;
@@ -107,7 +107,32 @@ public class Lexer {
                 currentCharNo++;
             }
             return new Token.DirectiveToken(sb.toString(), currentLineNo, tokenStartCharNo, tokenEndCharNo);
-        } else if (isCharNumber(c) || c == '-') {
+        } else if (isCharNumber(c)) {
+            sb.append(c);
+            c = getChar();
+            tokenEndCharNo = currentCharNo;
+            currentCharNo++;
+            if (c == 'x') {
+                sb.append(c);
+                c = getChar();
+                tokenEndCharNo = currentCharNo;
+                currentCharNo++;
+                while (isCharHexDigit(c)) {
+                    sb.append(c);
+                    c = getChar();
+                    tokenEndCharNo = currentCharNo;
+                    currentCharNo++;
+                }
+            } else {
+                while (isCharNumber(c)) {
+                    sb.append(c);
+                    c = getChar();
+                    tokenEndCharNo = currentCharNo;
+                    currentCharNo++;
+                }
+            }
+            return new Token.NumberToken(sb.toString(), currentCharNo, tokenStartCharNo, tokenEndCharNo);
+        } else if (c == '-') {
             sb.append(c);
             c = getChar();
             tokenEndCharNo = currentCharNo;
@@ -159,5 +184,9 @@ public class Lexer {
 
     public static boolean isCharLetter(char c) {
         return ((c >= 65 && c <= 90) || (c >= 97 && c <= 122));
+    }
+
+    public static boolean isCharHexDigit(char c) {
+        return ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'));
     }
 }
