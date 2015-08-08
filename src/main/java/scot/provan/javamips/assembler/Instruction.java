@@ -75,7 +75,7 @@ public class Instruction {
     public static int JAL      = 0b000011_00000000000000000000000000; // Jump and link
 
     public static int getOpcodeShifted(int instruction) {
-        return (instruction & OPCODE) >> OPCODE_SHIFT;
+        return (instruction & OPCODE) >>> OPCODE_SHIFT;
     }
 
     public static int addOpcodeShifted(int instruction, int opcodeShifted) {
@@ -83,7 +83,7 @@ public class Instruction {
     }
 
     public static int getRSShifted(int instruction) {
-        return (instruction & RS) >> RS_SHIFT;
+        return (instruction & RS) >>> RS_SHIFT;
     }
 
     public static int addRSShifted(int instruction, int rsShifted) {
@@ -91,7 +91,7 @@ public class Instruction {
     }
 
     public static int getRTShifted(int instruction) {
-        return (instruction & RT) >> RT_SHIFT;
+        return (instruction & RT) >>> RT_SHIFT;
     }
 
     public static int addRTShifted(int instruction, int rtShifted) {
@@ -99,7 +99,7 @@ public class Instruction {
     }
 
     public static int getRDShifted(int instruction) {
-        return (instruction & RD) >> RD_SHIFT;
+        return (instruction & RD) >>> RD_SHIFT;
     }
 
     public static int addRDShifted(int instruction, int rdShifted) {
@@ -107,7 +107,7 @@ public class Instruction {
     }
 
     public static int getShamtShifted(int instruction) {
-        return (instruction & SHAMT) >> SHAMT_SHIFT;
+        return (instruction & SHAMT) >>> SHAMT_SHIFT;
     }
 
     public static int addShamtShifted(int instruction, int shamtShifted) {
@@ -115,7 +115,7 @@ public class Instruction {
     }
 
     public static int getFunctShifted(int instruction) {
-        return (instruction & FUNCT) >> FUNCT_SHIFT;
+        return (instruction & FUNCT) >>> FUNCT_SHIFT;
     }
 
     public static int addFunctShifted(int instruction, int functShifted) {
@@ -123,7 +123,7 @@ public class Instruction {
     }
 
     public static int getImmediateShifted(int instruction) {
-        return (instruction & IMMEDIATE) >> IMMEDIATE_SHIFT;
+        return (instruction & IMMEDIATE) >>> IMMEDIATE_SHIFT;
     }
 
     public static int addImmediateShifted(int instruction, int immediateShifted) {
@@ -131,7 +131,7 @@ public class Instruction {
     }
 
     public static int getAddressShifted(int instruction) {
-        return (instruction & ADDRESS) >> ADDRESS_SHIFT;
+        return (instruction & ADDRESS) >>> ADDRESS_SHIFT;
     }
 
     public static int addAddressShifted(int instruction, int addressShifted) {
