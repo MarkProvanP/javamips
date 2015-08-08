@@ -84,7 +84,7 @@ public class Lexer {
         }
 
         if (isCharLetter(c)) {
-            while (isCharLetter(c) || isCharNumber(c)) {
+            while (isCharLetter(c) || isCharNumber(c) || c == '.' || c == '_') {
                 sb.append(c);
                 c = getChar();
                 tokenEndCharNo = currentCharNo;
