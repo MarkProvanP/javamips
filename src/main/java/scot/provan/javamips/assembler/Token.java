@@ -46,6 +46,10 @@ public class Token {
     public static class InstructionToken extends Token {
         private int opcodeOrFunction;
 
+        public int getOpcodeOrFunction() {
+            return opcodeOrFunction;
+        }
+
         public InstructionToken(String original, int lineNo, int charStart, int charEnd, int opcodeOrFunction) {
             super(original, lineNo, charStart, charEnd);
             this.opcodeOrFunction = opcodeOrFunction;
@@ -156,6 +160,9 @@ public class Token {
 
     public static class RegisterToken extends Token {
         private int register;
+        public int getRegister() {
+            return register;
+        }
         private RegisterToken(String original, int lineNo, int charStart, int charEnd, int register) {
             super(original, lineNo, charStart, charEnd);
             this.register = register;
