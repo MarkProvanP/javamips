@@ -9,6 +9,10 @@ public class Token {
     private int charStart;
     private int charEnd;
 
+    public String getOriginal() {
+        return original;
+    }
+
     public Token(String original, int lineNo, int charStart, int charEnd) {
         this.original = original;
         this.lineNo = lineNo;
