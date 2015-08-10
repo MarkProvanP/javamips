@@ -29,7 +29,11 @@ public class Token {
                 this.charEnd);
     }
 
-    public static class IdentToken extends Token {
+    public interface ConstantToken {
+
+    }
+
+    public static class IdentToken extends Token implements ConstantToken {
         public IdentToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);
         }
@@ -96,7 +100,7 @@ public class Token {
         }
     }
 
-    public static class NumberToken extends Token {
+    public static class NumberToken extends Token implements ConstantToken {
         private int value;
         public NumberToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);

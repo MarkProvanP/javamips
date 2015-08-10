@@ -56,7 +56,6 @@ public class ParserElement {
                 Parser.advanceToken();
             }
 
-            //  DST, TSC, ST, TCS, TC, D, TD, DTSH, DTS, STC, C, S
             switch (Instruction.InstructionSyntax.get(instructionToken.getOriginal())) {
                 case DST:
                     // Get $d
@@ -168,10 +167,152 @@ public class ParserElement {
     }
 
     public static class ITypeInstruction extends InstructionElement {
+        private Token.ITypeInstructionToken instructionToken;
+        private int rs;
+        private int rt;
+        private Token.ConstantToken immediateToken;
 
+        private ITypeInstruction(Token.ITypeInstructionToken instructionToken, int rs, int rt, Token.ConstantToken immediateToken) {
+            this.instructionToken = instructionToken;
+            this.rs = rs;
+            this.rt = rt;
+            this.immediateToken = immediateToken;
+        }
+
+        public static ITypeInstruction parse() {
+            Token.ITypeInstructionToken instructionToken = null;
+            int rs = 0;
+            int rt = 0;
+            Token.ConstantToken immediateToken = null;
+
+            if (Parser.getToken() instanceof Token.ITypeInstructionToken) {
+                instructionToken = (Token.ITypeInstructionToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            switch (Instruction.InstructionSyntax.get(instructionToken.getOriginal())) {
+                case TSC:
+                    // Get $t
+                    if (Parser.getToken() instanceof Token.RegisterToken) {
+                        rt = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                        Parser.advanceToken();
+                    }
+                    // Check comma
+                    if (Parser.getToken() instanceof Token.CommaToken) {
+                        Parser.advanceToken();
+                    }
+                    // Get $s
+                    if (Parser.getToken() instanceof Token.RegisterToken) {
+                        rs = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                        Parser.advanceToken();
+                    }
+                    // Check comma
+                    if (Parser.getToken() instanceof Token.CommaToken) {
+                        Parser.advanceToken();
+                    }
+                    // Get C
+                    if (Parser.getToken() instanceof Token.ConstantToken) {
+                        immediateToken = (Token.ConstantToken) Parser.getToken();
+                        Parser.advanceToken();
+                    }
+                    break;
+                case TCS:
+                    // Get $t
+                    if (Parser.getToken() instanceof Token.RegisterToken) {
+                        rt = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                        Parser.advanceToken();
+                    }
+                    // Check comma
+                    if (Parser.getToken() instanceof Token.CommaToken) {
+                        Parser.advanceToken();
+                    }
+                    // Get C
+                    if (Parser.getToken() instanceof Token.ConstantToken) {
+                        immediateToken = (Token.ConstantToken) Parser.getToken();
+                        Parser.advanceToken();
+                    }
+                    // Check comma
+                    if (Parser.getToken() instanceof Token.CommaToken) {
+                        Parser.advanceToken();
+                    }
+                    // Get $s
+                    if (Parser.getToken() instanceof Token.RegisterToken) {
+                        rs = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                        Parser.advanceToken();
+                    }
+                    break;
+                case TC:
+                    // Get $t
+                    if (Parser.getToken() instanceof Token.RegisterToken) {
+                        rt = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                        Parser.advanceToken();
+                    }
+                    // Check comma
+                    if (Parser.getToken() instanceof Token.CommaToken) {
+                        Parser.advanceToken();
+                    }
+                    // Get C
+                    if (Parser.getToken() instanceof Token.ConstantToken) {
+                        immediateToken = (Token.ConstantToken) Parser.getToken();
+                        Parser.advanceToken();
+                    }
+                    break;
+                case STC:
+                    // Get $s
+                    if (Parser.getToken() instanceof Token.RegisterToken) {
+                        rs = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                        Parser.advanceToken();
+                    }
+                    // Check comma
+                    if (Parser.getToken() instanceof Token.CommaToken) {
+                        Parser.advanceToken();
+                    }
+                    // Get $t
+                    if (Parser.getToken() instanceof Token.RegisterToken) {
+                        rt = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                        Parser.advanceToken();
+                    }
+                    // Check comma
+                    if (Parser.getToken() instanceof Token.CommaToken) {
+                        Parser.advanceToken();
+                    }
+                    // Get C
+                    if (Parser.getToken() instanceof Token.ConstantToken) {
+                        immediateToken = (Token.ConstantToken) Parser.getToken();
+                        Parser.advanceToken();
+                    }
+                    break;
+                default:
+                    return null;
+            }
+            return new ITypeInstruction(instructionToken, rs, rt, immediateToken);
+        }
     }
 
     public static class JTypeInstruction extends InstructionElement {
+        private Token.JTypeInstructionToken instructionToken;
+        private Token.ConstantToken address;
 
+        private JTypeInstruction(Token.JTypeInstructionToken instructionToken, Token.ConstantToken address) {
+            this.instructionToken = instructionToken;
+            this.address = address;
+        }
+
+        public static JTypeInstruction parse() {
+            Token.JTypeInstructionToken instructionToken = null;
+            Token.ConstantToken address = null;
+
+            if (Parser.getToken() instanceof Token.JTypeInstructionToken) {
+                instructionToken = (Token.JTypeInstructionToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            if (Parser.getToken() instanceof Token.ConstantToken) {
+                address = (Token.ConstantToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            return new JTypeInstruction(instructionToken, address);
+        }
     }
 }
