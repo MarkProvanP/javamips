@@ -15,8 +15,16 @@ public class ParserElement {
 
     }
 
-    public static class Directive extends ParserElement {
+    public static class DirectiveElement extends ParserElement {
+        private Token.DirectiveToken directiveToken;
 
+        private DirectiveElement(Token.DirectiveToken directiveToken) {
+            this.directiveToken = directiveToken;
+        }
+
+        public static DirectiveElement parse() {
+            return null;
+        }
     }
 
     public static class InstructionElement extends ParserElement {
@@ -155,12 +163,6 @@ public class ParserElement {
                     break;
                 default:
             }
-
-
-
-
-
-
 
             return new RTypeInstruction(instructionToken, staticRS, staticRT, staticRD);
         }
