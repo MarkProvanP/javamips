@@ -23,7 +23,191 @@ public class ParserElement {
         }
 
         public static DirectiveElement parse() {
-            return null;
+            if (Parser.getToken() instanceof Token.DirectiveToken) {
+                Token.DirectiveToken directiveToken = (Token.DirectiveToken) Parser.getToken();
+                switch (Directive.DirectiveSyntax.get(directiveToken.getOriginal())) {
+                    case N:
+                        return NTypeDirective.parse();
+                    case STR:
+                        return STRTypeDirective.parse();
+                    case LIST:
+                        return ListTypeDirective.parse();
+                    case OPTADDR:
+                        return OptAddrTypeDirective.parse();
+                    case SYMSIZE:
+                        return SymSizeTypeDirective.parse();
+                    case SYM:
+                        return SymTypeDirective.parse();
+                    default:
+                        return null;
+                }
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public static class NTypeDirective extends DirectiveElement {
+        private int n;
+
+        private NTypeDirective(Token.DirectiveToken directiveToken, int n) {
+            super(directiveToken);
+            this.n = n;
+        }
+
+        public static NTypeDirective parse() {
+            Token.DirectiveToken directiveToken = null;
+            int n = 0;
+
+            if (Parser.getToken() instanceof Token.DirectiveToken) {
+                directiveToken = (Token.DirectiveToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            if (Parser.getToken() instanceof Token.NumberToken) {
+                n = ((Token.NumberToken) Parser.getToken()).getValue();
+                Parser.advanceToken();
+            }
+
+            return new NTypeDirective(directiveToken, n);
+        }
+    }
+
+    public static class STRTypeDirective extends DirectiveElement {
+        private String str;
+
+        private STRTypeDirective(Token.DirectiveToken directiveToken, String str) {
+            super(directiveToken);
+            this.str = str;
+        }
+
+        public static STRTypeDirective parse() {
+            Token.DirectiveToken directiveToken = null;
+            String str = null;
+
+            if (Parser.getToken() instanceof Token.DirectiveToken) {
+                directiveToken = (Token.DirectiveToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            if (Parser.getToken() instanceof Token.StringToken) {
+                str = ((Token.StringToken) Parser.getToken()).getValue();
+                Parser.advanceToken();
+            }
+
+            return new STRTypeDirective(directiveToken, str);
+        }
+    }
+
+    public static class ListTypeDirective extends DirectiveElement {
+        private ArrayList<Integer> list = new ArrayList<Integer>();
+
+        private ListTypeDirective(Token.DirectiveToken directiveToken, ArrayList<Integer> list) {
+            super(directiveToken);
+            this.list = list;
+        }
+
+        public static ListTypeDirective parse() {
+            Token.DirectiveToken directiveToken = null;
+            ArrayList<Integer> list = new ArrayList<Integer>();
+
+            if (Parser.getToken() instanceof Token.DirectiveToken) {
+                directiveToken = (Token.DirectiveToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            while (Parser.getToken() instanceof Token.NumberToken) {
+                list.add(((Token.NumberToken) Parser.getToken()).getValue());
+                Parser.advanceToken();
+            }
+
+            return new ListTypeDirective(directiveToken, list);
+        }
+    }
+
+    public static class OptAddrTypeDirective extends DirectiveElement {
+        private Token.ConstantToken address = null;
+
+        private OptAddrTypeDirective(Token.DirectiveToken directiveToken, Token.ConstantToken address) {
+            super(directiveToken);
+            this.address = address;
+        }
+
+        public static OptAddrTypeDirective parse() {
+            Token.DirectiveToken directiveToken = null;
+            Token.ConstantToken address = null;
+
+            if (Parser.getToken() instanceof Token.DirectiveToken) {
+                directiveToken = (Token.DirectiveToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            if (Parser.getToken() instanceof Token.ConstantToken) {
+                address = (Token.NumberToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            return new OptAddrTypeDirective(directiveToken, address);
+        }
+    }
+
+    public static class SymSizeTypeDirective extends DirectiveElement {
+        private Token.ConstantToken sym = null;
+        private int size;
+
+        private SymSizeTypeDirective(Token.DirectiveToken directiveToken, Token.ConstantToken sym, int size) {
+            super(directiveToken);
+            this.sym = sym;
+            this.size = size;
+        }
+
+        public static SymSizeTypeDirective parse() {
+            Token.DirectiveToken directiveToken = null;
+            Token.ConstantToken sym = null;
+            int size = 0;
+
+            if (Parser.getToken() instanceof Token.DirectiveToken) {
+                directiveToken = (Token.DirectiveToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            if (Parser.getToken() instanceof Token.ConstantToken) {
+                sym = (Token.ConstantToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            if (Parser.getToken() instanceof Token.NumberToken) {
+                size = ((Token.NumberToken) Parser.getToken()).getValue();
+                Parser.advanceToken();
+            }
+
+            return new SymSizeTypeDirective(directiveToken, sym, size);
+        }
+    }
+
+    public static class SymTypeDirective extends DirectiveElement {
+        private Token.ConstantToken sym = null;
+
+        private SymTypeDirective(Token.DirectiveToken directiveToken, Token.ConstantToken sym) {
+            super(directiveToken);
+            this.sym = sym;
+        }
+
+        public static SymTypeDirective parse() {
+            Token.DirectiveToken directiveToken = null;
+            Token.ConstantToken sym = null;
+
+            if (Parser.getToken() instanceof Token.DirectiveToken) {
+                directiveToken = (Token.DirectiveToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            if (Parser.getToken() instanceof Token.ConstantToken) {
+                sym = (Token.ConstantToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            return new SymTypeDirective(directiveToken, sym);
         }
     }
 

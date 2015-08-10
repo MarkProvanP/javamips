@@ -102,6 +102,9 @@ public class Token {
 
     public static class NumberToken extends Token implements ConstantToken {
         private int value;
+        public int getValue() {
+            return value;
+        }
         public NumberToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);
             if (original.length() > 2 && original.charAt(1) == 'x') {
@@ -110,6 +113,7 @@ public class Token {
                 this.value = Integer.parseInt(original);
             }
         }
+
 
         public String getInfo() {
             return String.format("%s, with number value: %s",
@@ -120,6 +124,9 @@ public class Token {
 
     public static class StringToken extends Token {
         private String value;
+        public String getValue() {
+            return value;
+        }
         public StringToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);
             String unescaped = Lexer.unescapeJavaString(original);
