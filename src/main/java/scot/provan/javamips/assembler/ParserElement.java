@@ -9,10 +9,41 @@ import java.util.ArrayList;
 public class ParserElement {
     public static class Program {
         private ArrayList<ParserElement> elements = new ArrayList<ParserElement>();
+        private Program(ArrayList<ParserElement> elements) {
+            this.elements = elements;
+        }
+        public static Program parse() {
+            ArrayList<ParserElement> elements = new ArrayList<ParserElement>();
+
+            while (Parser.getToken() != null) {
+                if (Parser.getToken() instanceof Token.DirectiveToken) {
+                    elements.add(DirectiveElement.parse());
+                } else if (Parser.getToken() instanceof Token.LabelToken) {
+                    elements.add(LabelElement.parse());
+                } else if (Parser.getToken() instanceof Token.InstructionToken) {
+                    elements.add(InstructionElement.parse());
+                }
+            }
+
+            return new Program(elements);
+        }
     }
 
-    public static class Label extends ParserElement {
+    public static class LabelElement extends ParserElement {
+        private Token.LabelToken labelToken;
+        private LabelElement(Token.LabelToken labelToken) {
+            this.labelToken = labelToken;
+        }
 
+        public static LabelElement parse() {
+            Token.LabelToken labelToken = null;
+            if (Parser.getToken() instanceof Token.LabelToken) {
+                labelToken = (Token.LabelToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            return new LabelElement(labelToken);
+        }
     }
 
     public static class DirectiveElement extends ParserElement {
