@@ -16,12 +16,16 @@ public class ParserElement {
             ArrayList<ParserElement> elements = new ArrayList<ParserElement>();
 
             while (Parser.getToken() != null) {
+                System.out.printf("Program / Parser.getToken() info %s\n", Parser.getToken().getInfo());
                 if (Parser.getToken() instanceof Token.DirectiveToken) {
                     elements.add(DirectiveElement.parse());
                 } else if (Parser.getToken() instanceof Token.LabelToken) {
                     elements.add(LabelElement.parse());
                 } else if (Parser.getToken() instanceof Token.InstructionToken) {
                     elements.add(InstructionElement.parse());
+                } else {
+                    System.err.printf("Error! Token %s cannot be parsed as first child of Program\n", Parser.getToken().getInfo());
+                    System.exit(1);
                 }
             }
 
