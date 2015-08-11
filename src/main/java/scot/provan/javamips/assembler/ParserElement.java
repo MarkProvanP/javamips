@@ -21,6 +21,10 @@ public class ParserElement {
                     elements.add(DirectiveElement.parse());
                 } else if (Parser.getToken() instanceof Token.LabelToken) {
                     elements.add(LabelElement.parse());
+                } else if (Parser.getToken() instanceof Token.PseudoTypeInstructionToken) {
+                    // PseudoTypeInstruction.parse() return an ArrayList of the real instructions, so use the ArrayList
+                    // addAll() method instead of just add().
+                    elements.addAll(PseudoTypeInstruction.parse());
                 } else if (Parser.getToken() instanceof Token.InstructionToken) {
                     elements.add(InstructionElement.parse());
                 } else {
@@ -266,7 +270,7 @@ public class ParserElement {
         private int rt;
         private int rd;
 
-        private RTypeInstruction(Token.RTypeInstructionToken instructionToken, int rs, int rt, int rd) {
+        protected RTypeInstruction(Token.RTypeInstructionToken instructionToken, int rs, int rt, int rd) {
             this.instructionToken = instructionToken;
             this.rs = rs;
             this.rt = rt;
@@ -393,7 +397,7 @@ public class ParserElement {
         private int rt;
         private Token.ConstantToken immediateToken;
 
-        private ITypeInstruction(Token.ITypeInstructionToken instructionToken, int rs, int rt, Token.ConstantToken immediateToken) {
+        protected ITypeInstruction(Token.ITypeInstructionToken instructionToken, int rs, int rt, Token.ConstantToken immediateToken) {
             this.instructionToken = instructionToken;
             this.rs = rs;
             this.rt = rt;
@@ -514,7 +518,7 @@ public class ParserElement {
         private Token.JTypeInstructionToken instructionToken;
         private Token.ConstantToken address;
 
-        private JTypeInstruction(Token.JTypeInstructionToken instructionToken, Token.ConstantToken address) {
+        protected JTypeInstruction(Token.JTypeInstructionToken instructionToken, Token.ConstantToken address) {
             this.instructionToken = instructionToken;
             this.address = address;
         }
@@ -534,6 +538,177 @@ public class ParserElement {
             }
 
             return new JTypeInstruction(instructionToken, address);
+        }
+    }
+
+    public abstract static class PseudoTypeInstruction {
+        public static ArrayList<InstructionElement> parse() {
+            if (Parser.getToken() instanceof Token.PseudoTypeInstructionToken) {
+                Token.PseudoTypeInstructionToken pseudoInstructionToken = (Token.PseudoTypeInstructionToken) Parser.getToken();
+                switch (pseudoInstructionToken.getOpcodeOrFunction()) {
+                    case Instruction.PS_MOVE:
+                        return parsePSMOVE();
+                    case Instruction.PS_CLEAR:
+                        return parsePSCLEAR();
+                    case Instruction.PS_NOT:
+                        return parsePSNOT();
+                    case Instruction.PS_LA:
+                        return parsePSLA();
+                    case Instruction.PS_LI:
+                        return parserPSLI();
+                    case Instruction.PS_B:
+                        return parsePSB();
+                    case Instruction.PS_BAL:
+                        return parsePSBAL();
+                    case Instruction.PS_BGT:
+                        return parsePSBGT();
+                    case Instruction.PS_BLT:
+                        return parsePSBLT();
+                    case Instruction.PS_BGE:
+                        return parsePSGBE();
+                    case Instruction.PS_BLE:
+                        return parsePSBLE();
+                    case Instruction.PS_BGTU:
+                        return parsePSBGTU();
+                    case Instruction.PS_BGTZ:
+                        return parsePSBGTZ();
+                    case Instruction.PS_BEQZ:
+                        return parsePSBEQZ();
+                    case Instruction.PS_MUL:
+                        return parsePSMUL();
+                    case Instruction.PS_DIV:
+                        return parsePSDIV();
+                    case Instruction.PS_REM:
+                        return parsePSREM();
+                }
+            }
+            return null;
+        }
+
+        private static ArrayList<InstructionElement> parsePSMOVE() {
+            ArrayList<InstructionElement> realInstructions = new ArrayList<InstructionElement>();
+            Token.PseudoTypeInstructionToken pseudoToken = (Token.PseudoTypeInstructionToken) Parser.getToken();
+            Parser.advanceToken();
+            int staticRT = 0;
+            int staticRS = 0;
+            // Get $t
+            if (Parser.getToken() instanceof Token.RegisterToken) {
+                staticRT = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                Parser.advanceToken();
+            }
+            // Check comma
+            if (Parser.getToken() instanceof Token.CommaToken) {
+                Parser.advanceToken();
+            }
+            // Get $s
+            if (Parser.getToken() instanceof Token.RegisterToken) {
+                staticRS = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                Parser.advanceToken();
+            }
+            // move $rt, $rs -> add $rt, $rs, $zero
+            Token.RTypeInstructionToken realInstructionToken = new Token.RTypeInstructionToken(
+                    Token.PSEUDO_ORIGINAL,
+                    Token.PSEUDO_LINENO,
+                    Token.PSEUDO_CHARSTART,
+                    Token.PSEUDO_CHAREND,
+                    Instruction.ADD);
+            RTypeInstruction realInstruction = new RTypeInstruction(realInstructionToken, staticRS, staticRT, 0);
+            realInstructions.add(realInstruction);
+            return realInstructions;
+        }
+
+        private static ArrayList<InstructionElement> parsePSCLEAR() {
+            ArrayList<InstructionElement> realInstructions = new ArrayList<InstructionElement>();
+            Token.PseudoTypeInstructionToken pseudoToken = (Token.PseudoTypeInstructionToken) Parser.getToken();
+            Parser.advanceToken();
+            int staticRT = 0;
+            // Get $t
+            if (Parser.getToken() instanceof Token.RegisterToken) {
+                staticRT = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                Parser.advanceToken();
+            }
+            // move $rt, $rs -> add $rt, $rs, $zero
+            Token.RTypeInstructionToken realInstructionToken = new Token.RTypeInstructionToken(
+                    Token.PSEUDO_ORIGINAL,
+                    Token.PSEUDO_LINENO,
+                    Token.PSEUDO_CHARSTART,
+                    Token.PSEUDO_CHAREND,
+                    Instruction.ADD);
+            RTypeInstruction realInstruction = new RTypeInstruction(realInstructionToken, 0, staticRT, 0);
+            realInstructions.add(realInstruction);
+            return realInstructions;
+        }
+
+        private static ArrayList<InstructionElement> parsePSNOT() {
+            ArrayList<InstructionElement> realInstructions = new ArrayList<InstructionElement>();
+            Token.PseudoTypeInstructionToken pseudoToken = (Token.PseudoTypeInstructionToken) Parser.getToken();
+            Parser.advanceToken();
+            int staticRT = 0;
+            int staticRS = 0;
+            // Get $t
+            if (Parser.getToken() instanceof Token.RegisterToken) {
+                staticRT = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                Parser.advanceToken();
+            }
+            // Check comma
+            if (Parser.getToken() instanceof Token.CommaToken) {
+                Parser.advanceToken();
+            }
+            // Get $s
+            if (Parser.getToken() instanceof Token.RegisterToken) {
+                staticRS = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                Parser.advanceToken();
+            }
+            // move $rt, $rs -> add $rt, $rs, $zero
+            Token.RTypeInstructionToken realInstructionToken = new Token.RTypeInstructionToken(
+                    Token.PSEUDO_ORIGINAL,
+                    Token.PSEUDO_LINENO,
+                    Token.PSEUDO_CHARSTART,
+                    Token.PSEUDO_CHAREND,
+                    Instruction.NOR);
+            RTypeInstruction realInstruction = new RTypeInstruction(realInstructionToken, staticRS, staticRT, 0);
+            realInstructions.add(realInstruction);
+            return realInstructions;
+        }
+
+        private static ArrayList<InstructionElement> parsePSLA() {
+            ArrayList<InstructionElement> realInstructions = new ArrayList<InstructionElement>();
+            Token.PseudoTypeInstructionToken pseudoToken = (Token.PseudoTypeInstructionToken) Parser.getToken();
+            Parser.advanceToken();
+            int staticRD = 0;
+            Token.ConstantToken labelAddr = null;
+            // Get $d
+            if (Parser.getToken() instanceof Token.RegisterToken) {
+                staticRD = ((Token.RegisterToken) Parser.getToken()).getRegister();
+                Parser.advanceToken();
+            }
+            // Check comma
+            if (Parser.getToken() instanceof Token.CommaToken) {
+                Parser.advanceToken();
+            }
+            // Get LabelAddr
+            if (Parser.getToken() instanceof Token.IdentToken) {
+                labelAddr = (Token.IdentToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+            // la %rd, LabelAddr -> lui %rd, LabelAddr[31:16]; ori %rd, %rd, LabelAddr[15:0]
+            Token.ITypeInstructionToken firstRealToken = new Token.ITypeInstructionToken(
+                    Token.PSEUDO_ORIGINAL,
+                    Token.PSEUDO_LINENO,
+                    Token.PSEUDO_CHARSTART,
+                    Token.PSEUDO_CHAREND,
+                    Instruction.LUI);
+            Token.ITypeInstructionToken secondRealToken = new Token.ITypeInstructionToken(
+                    Token.PSEUDO_ORIGINAL,
+                    Token.PSEUDO_LINENO,
+                    Token.PSEUDO_CHARSTART,
+                    Token.PSEUDO_CHAREND,
+                    Instruction.ORI);
+            ITypeInstruction firstInstruction = new ITypeInstruction(firstRealToken, 0, staticRD, labelAddr);
+            ITypeInstruction secondInstruction = new ITypeInstruction(secondRealToken, staticRD, staticRD, labelAddr);
+            realInstructions.add(firstInstruction);
+            realInstructions.add(secondInstruction);
+            return realInstructions;
         }
     }
 }

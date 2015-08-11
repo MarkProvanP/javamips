@@ -4,6 +4,10 @@ package scot.provan.javamips.assembler;
  * Created by Mark on 08/08/2015.
  */
 public class Token {
+    public static final String PSEUDO_ORIGINAL = "#PSEUDO#";
+    public static final int PSEUDO_LINENO = Integer.MIN_VALUE;
+    public static final int PSEUDO_CHARSTART = Integer.MIN_VALUE;
+    public static final int PSEUDO_CHAREND = Integer.MIN_VALUE;
     private String original;
     private int lineNo;
     private int charStart;
@@ -173,6 +177,12 @@ public class Token {
         }
     }
 
+    public static class PseudoTypeInstructionToken extends InstructionToken {
+        private PseudoTypeInstructionToken(String original, int lineNo, int charStart, int charEnd, int opcode) {
+            super(original, lineNo, charStart, charEnd, opcode);
+        }
+    }
+
     public static class RegisterToken extends Token {
         private int register;
         public int getRegister() {
@@ -202,6 +212,8 @@ public class Token {
                 return new ITypeInstructionToken(original, lineNo, charStart, charEnd, Instruction.ITypes.get(original));
             } else if (Instruction.JTypes.containsKey(original)) {
                 return new JTypeInstructionToken(original, lineNo, charStart, charEnd, Instruction.JTypes.get(original));
+            } else if (Instruction.PseudoTypes.containsKey(original)) {
+                return new PseudoTypeInstructionToken(original, lineNo, charStart, charEnd, Instruction.PseudoTypes.get(original));
             }
         }
         return null;

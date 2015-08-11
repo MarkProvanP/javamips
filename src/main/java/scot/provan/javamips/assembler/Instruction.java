@@ -6,75 +6,94 @@ import java.util.HashMap;
  * Created by Mark on 07/08/2015.
  */
 public class Instruction {
-    public static int OPCODE   = 0b111111_00000_00000_00000_00000_000000; // Opcode mask
-    public static int OPCODE_SHIFT = 26;
-    //                             332222_22222_21111_11111_10000_000000
-    //                           0b109876_54321_09876_54321_09876_543210
-    public static int RS       = 0b000000_11111_00000_00000_00000_000000; // RS mask
-    public static int RS_SHIFT = 21;
-    public static int RT       = 0b000000_00000_11111_00000_00000_000000; // RT mask
-    public static int RT_SHIFT = 16;
-    public static int RD       = 0b000000_00000_00000_11111_00000_000000; // RD mask
-    public static int RD_SHIFT = 11;
-    public static int SHAMT    = 0b000000_00000_00000_00000_11111_000000; // Shift amount mask
-    public static int SHAMT_SHIFT = 6;
-    public static int FUNCT    = 0b000000_00000_00000_00000_00000_111111; // Function mask
-    public static int FUNCT_SHIFT = 0;
-    // R Type                     OPCODE  RS    RT    RD    SHAMT  FUNCT
-    public static int ADD      = 0b000000_00000_00000_00000_00000_100000; // Add
-    public static int ADDU     = 0b000000_00000_00000_00000_00000_100001; // Add unsigned
-    public static int SUB      = 0b000000_00000_00000_00000_00000_100010; // Subtract
-    public static int SUBU     = 0b000000_00000_00000_00000_00000_100011; // Subtract unsigned
-    public static int MULT     = 0b000000_00000_00000_00000_00000_011000; // Multiply
-    public static int MULTU    = 0b000000_00000_00000_00000_00000_011001; // Multiply unsigned
-    public static int DIV      = 0b000000_00000_00000_00000_00000_011010; // Divide
-    public static int DIVU     = 0b000000_00000_00000_00000_00000_011011; // Divide unsigned
-    public static int MFHI     = 0b000000_00000_00000_00000_00000_010000; // Move from high
-    public static int MFLO     = 0b000000_00000_00000_00000_00000_010010; // Move from low
+    public static final int OPCODE   = 0b111111_00000_00000_00000_00000_000000; // Opcode mask
+    public static final int OPCODE_SHIFT = 26;
+    //                                   332222_22222_21111_11111_10000_000000
+    //                                 0b109876_54321_09876_54321_09876_543210
+    public static final int RS       = 0b000000_11111_00000_00000_00000_000000; // RS mask
+    public static final int RS_SHIFT = 21;
+    public static final int RT       = 0b000000_00000_11111_00000_00000_000000; // RT mask
+    public static final int RT_SHIFT = 16;
+    public static final int RD       = 0b000000_00000_00000_11111_00000_000000; // RD mask
+    public static final int RD_SHIFT = 11;
+    public static final int SHAMT    = 0b000000_00000_00000_00000_11111_000000; // Shift amount mask
+    public static final int SHAMT_SHIFT = 6;
+    public static final int FUNCT    = 0b000000_00000_00000_00000_00000_111111; // Function mask
+    public static final int FUNCT_SHIFT = 0;
+    // R Type                           OPCODE  RS    RT    RD    SHAMT  FUNCT
+    public static final int ADD      = 0b000000_00000_00000_00000_00000_100000; // Add
+    public static final int ADDU     = 0b000000_00000_00000_00000_00000_100001; // Add unsigned
+    public static final int SUB      = 0b000000_00000_00000_00000_00000_100010; // Subtract
+    public static final int SUBU     = 0b000000_00000_00000_00000_00000_100011; // Subtract unsigned
+    public static final int MULT     = 0b000000_00000_00000_00000_00000_011000; // Multiply
+    public static final int MULTU    = 0b000000_00000_00000_00000_00000_011001; // Multiply unsigned
+    public static final int DIV      = 0b000000_00000_00000_00000_00000_011010; // Divide
+    public static final int DIVU     = 0b000000_00000_00000_00000_00000_011011; // Divide unsigned
+    public static final int MFHI     = 0b000000_00000_00000_00000_00000_010000; // Move from high
+    public static final int MFLO     = 0b000000_00000_00000_00000_00000_010010; // Move from low
     // TODO mfcZ
     // TODO mtcZ
-    public static int AND      = 0b000000_00000_00000_00000_00000_100100; // Bitwise AND
-    public static int OR       = 0b000000_00000_00000_00000_00000_100101; // Bitwise OR
-    public static int XOR      = 0b000000_00000_00000_00000_00000_100110; // Bitwise XOR
-    public static int NOR      = 0b000000_00000_00000_00000_00000_100111; // Bitwise NOR
-    public static int SLT      = 0b000000_00000_00000_00000_00000_101010; // Set on less than
-    public static int SLL      = 0b000000_00000_00000_00000_00000_000000; // Shift left logical immediate
-    public static int SRL      = 0b000000_00000_00000_00000_00000_000010; // Shift right logical immediate
-    public static int SRA      = 0b000000_00000_00000_00000_00000_000011; // Shift right arithmetic immediate
-    public static int SLLV     = 0b000000_00000_00000_00000_00000_000100; // Shift left logical
-    public static int SRLV     = 0b000000_00000_00000_00000_00000_000110; // Shift right logical
-    public static int SRAV     = 0b000000_00000_00000_00000_00000_000111; // Shift right arithmetic
-    public static int JR       = 0b000000_00000_00000_00000_00000_001000; // Jump register
+    public static final int AND      = 0b000000_00000_00000_00000_00000_100100; // Bitwise AND
+    public static final int OR       = 0b000000_00000_00000_00000_00000_100101; // Bitwise OR
+    public static final int XOR      = 0b000000_00000_00000_00000_00000_100110; // Bitwise XOR
+    public static final int NOR      = 0b000000_00000_00000_00000_00000_100111; // Bitwise NOR
+    public static final int SLT      = 0b000000_00000_00000_00000_00000_101010; // Set on less than
+    public static final int SLL      = 0b000000_00000_00000_00000_00000_000000; // Shift left logical immediate
+    public static final int SRL      = 0b000000_00000_00000_00000_00000_000010; // Shift right logical immediate
+    public static final int SRA      = 0b000000_00000_00000_00000_00000_000011; // Shift right arithmetic immediate
+    public static final int SLLV     = 0b000000_00000_00000_00000_00000_000100; // Shift left logical
+    public static final int SRLV     = 0b000000_00000_00000_00000_00000_000110; // Shift right logical
+    public static final int SRAV     = 0b000000_00000_00000_00000_00000_000111; // Shift right arithmetic
+    public static final int JR       = 0b000000_00000_00000_00000_00000_001000; // Jump register
 
-    //                             332222_22222_21111_1111110000000000
-    //                           0b109876_54321_09876_5432109876543210
-    public static int IMMEDIATE= 0b000000_00000_00000_1111111111111111; // Immediate mask
-    public static int IMMEDIATE_SHIFT = 0;
-    // I Type                      OPCODE RS    RT    IMMEDIATE
-    public static int ADDI     = 0b001000_00000_00000_0000000000000000; // Add immediate
-    public static int ADDIU    = 0b001001_00000_00000_0000000000000000; // Add immediate unsigned
-    public static int LW       = 0b100011_00000_00000_0000000000000000; // Load word
-    public static int LH       = 0b100001_00000_00000_0000000000000000; // Load halfword
-    public static int LHU      = 0b100101_00000_00000_0000000000000000; // Load halfword unsigned
-    public static int LB       = 0b100000_00000_00000_0000000000000000; // Load byte
-    public static int LBU      = 0b100100_00000_00000_0000000000000000; // Load byte unsigned
-    public static int SW       = 0b101011_00000_00000_0000000000000000; // Store word
-    public static int SH       = 0b101001_00000_00000_0000000000000000; // Store half
-    public static int SB       = 0b101000_00000_00000_0000000000000000; // Store byte
-    public static int LUI      = 0b001111_00000_00000_0000000000000000; // Load upper immediate
-    public static int ANDI     = 0b001100_00000_00000_0000000000000000; // Bitwise AND immediate
-    public static int ORI      = 0b001101_00000_00000_0000000000000000; // Bitwise OR immediate
-    public static int SLTI     = 0b001010_00000_00000_0000000000000000; // Set on less than immediate
-    public static int BEQ      = 0b000100_00000_00000_0000000000000000; // Branch on equal
-    public static int BNE      = 0b000101_00000_00000_0000000000000000; // Branch on not equal
+    //                                   332222_22222_21111_1111110000000000
+    //                                 0b109876_54321_09876_5432109876543210
+    public static final int IMMEDIATE= 0b000000_00000_00000_1111111111111111; // Immediate mask
+    public static final int IMMEDIATE_SHIFT = 0;
+    // I Type                            OPCODE RS    RT    IMMEDIATE
+    public static final int ADDI     = 0b001000_00000_00000_0000000000000000; // Add immediate
+    public static final int ADDIU    = 0b001001_00000_00000_0000000000000000; // Add immediate unsigned
+    public static final int LW       = 0b100011_00000_00000_0000000000000000; // Load word
+    public static final int LH       = 0b100001_00000_00000_0000000000000000; // Load halfword
+    public static final int LHU      = 0b100101_00000_00000_0000000000000000; // Load halfword unsigned
+    public static final int LB       = 0b100000_00000_00000_0000000000000000; // Load byte
+    public static final int LBU      = 0b100100_00000_00000_0000000000000000; // Load byte unsigned
+    public static final int SW       = 0b101011_00000_00000_0000000000000000; // Store word
+    public static final int SH       = 0b101001_00000_00000_0000000000000000; // Store half
+    public static final int SB       = 0b101000_00000_00000_0000000000000000; // Store byte
+    public static final int LUI      = 0b001111_00000_00000_0000000000000000; // Load upper immediate
+    public static final int ANDI     = 0b001100_00000_00000_0000000000000000; // Bitwise AND immediate
+    public static final int ORI      = 0b001101_00000_00000_0000000000000000; // Bitwise OR immediate
+    public static final int SLTI     = 0b001010_00000_00000_0000000000000000; // Set on less than immediate
+    public static final int BEQ      = 0b000100_00000_00000_0000000000000000; // Branch on equal
+    public static final int BNE      = 0b000101_00000_00000_0000000000000000; // Branch on not equal
 
-    //                             332222_22222211111111110000000000
-    //                           0b109876_54321098765432109876543210
-    public static int ADDRESS  = 0b000000_11111111111111111111111111; // Address mask
-    public static int ADDRESS_SHIFT = 0;
-    // J Type                      OPCODE ADDRESS
-    public static int J        = 0b000010_00000000000000000000000000; // Jump
-    public static int JAL      = 0b000011_00000000000000000000000000; // Jump and link
+    //                                   332222_22222211111111110000000000
+    //                                 0b109876_54321098765432109876543210
+    public static final int ADDRESS  = 0b000000_11111111111111111111111111; // Address mask
+    public static final int ADDRESS_SHIFT = 0;
+    // J Type                            OPCODE ADDRESS
+    public static final int J        = 0b000010_00000000000000000000000000; // Jump
+    public static final int JAL      = 0b000011_00000000000000000000000000; // Jump and link
+
+    // Pseudo types - these instructions are meaningless, but they have to be unique.
+    public static final int PS_MOVE   = 0b000000_11111_00001_11111_11111_000000;
+    public static final int PS_CLEAR  = 0b000000_11111_00010_11111_11111_000000;
+    public static final int PS_NOT    = 0b000000_11111_10010_11111_11111_000000; // Oops, missed this one.
+    public static final int PS_LA     = 0b000000_11111_00011_11111_11111_000000;
+    public static final int PS_LI     = 0b000000_11111_00100_11111_11111_000000;
+    public static final int PS_B      = 0b000000_11111_00101_11111_11111_000000;
+    public static final int PS_BAL    = 0b000000_11111_00110_11111_11111_000000;
+    public static final int PS_BGT    = 0b000000_11111_00111_11111_11111_000000;
+    public static final int PS_BLT    = 0b000000_11111_01001_11111_11111_000000;
+    public static final int PS_BGE    = 0b000000_11111_01010_11111_11111_000000;
+    public static final int PS_BLE    = 0b000000_11111_01011_11111_11111_000000;
+    public static final int PS_BGTU   = 0b000000_11111_01100_11111_11111_000000;
+    public static final int PS_BGTZ   = 0b000000_11111_01101_11111_11111_000000;
+    public static final int PS_BEQZ   = 0b000000_11111_01110_11111_11111_000000;
+    public static final int PS_MUL    = 0b000000_11111_01111_11111_11111_000000;
+    public static final int PS_DIV    = 0b000000_11111_10000_11111_11111_000000;
+    public static final int PS_REM    = 0b000000_11111_10001_11111_11111_000000;
 
     public static int getOpcodeShifted(int instruction) {
         return (instruction & OPCODE) >>> OPCODE_SHIFT;
@@ -143,6 +162,7 @@ public class Instruction {
     public static HashMap<String, Integer> RTypes = new HashMap<String, Integer>();
     public static HashMap<String, Integer> ITypes = new HashMap<String, Integer>();
     public static HashMap<String, Integer> JTypes = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> PseudoTypes = new HashMap<String, Integer>();
     public static HashMap<String, Integer> Instructions = new HashMap<String, Integer>();
     public enum InstructionSyntaxType {
         DST, TSC, ST, TCS, TC, D, TD, DTSH, DTS, STC, C, S
@@ -189,8 +209,26 @@ public class Instruction {
         ITypes.put("bne",   BNE);   InstructionSyntax.put("bne",   InstructionSyntaxType.STC);
         JTypes.put("j",     J);     InstructionSyntax.put("j",     InstructionSyntaxType.C);
         JTypes.put("jal",   JAL);   InstructionSyntax.put("jal",   InstructionSyntaxType.C);
+        PseudoTypes.put("move",     PS_MOVE);
+        PseudoTypes.put("clear",    PS_CLEAR);
+        PseudoTypes.put("not",      PS_NOT);
+        PseudoTypes.put("la",       PS_LA);
+        PseudoTypes.put("li",       PS_LI);
+        PseudoTypes.put("b",        PS_B);
+        PseudoTypes.put("bal",      PS_BAL);
+        PseudoTypes.put("bgt",      PS_BGT);
+        PseudoTypes.put("blt",      PS_BLT);
+        PseudoTypes.put("bge",      PS_BGE);
+        PseudoTypes.put("ble",      PS_BLE);
+        PseudoTypes.put("bgtu",     PS_BGTU);
+        PseudoTypes.put("bgtz",     PS_BGTZ);
+        PseudoTypes.put("beqz",     PS_BEQZ);
+        PseudoTypes.put("mul",      PS_MUL);
+        PseudoTypes.put("div",      PS_DIV);
+        PseudoTypes.put("rem",      PS_REM);
         Instructions.putAll(RTypes);
         Instructions.putAll(ITypes);
         Instructions.putAll(JTypes);
+        Instructions.putAll(PseudoTypes);
     }
 }
