@@ -1,6 +1,5 @@
 package scot.provan.javamips.assembler;
 
-import scot.provan.javamips.assembler.Instruction;
 import java.util.ArrayList;
 
 /**
@@ -611,7 +610,7 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.ADD);
+                    Instruction.R_ADD);
             RTypeInstruction realInstruction = new RTypeInstruction(realInstructionToken, staticRS, staticRT, 0);
             realInstructions.add(realInstruction);
             return realInstructions;
@@ -633,7 +632,7 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.ADD);
+                    Instruction.R_ADD);
             RTypeInstruction realInstruction = new RTypeInstruction(realInstructionToken, 0, staticRT, 0);
             realInstructions.add(realInstruction);
             return realInstructions;
@@ -665,7 +664,7 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.NOR);
+                    Instruction.R_NOR);
             RTypeInstruction realInstruction = new RTypeInstruction(realInstructionToken, staticRS, staticRT, 0);
             realInstructions.add(realInstruction);
             return realInstructions;
@@ -697,13 +696,13 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.LUI);
+                    Instruction.I_LUI);
             Token.ITypeInstructionToken secondRealToken = new Token.ITypeInstructionToken(
                     Token.PSEUDO_ORIGINAL,
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.ORI);
+                    Instruction.I_ORI);
             ITypeInstruction firstInstruction = new ITypeInstruction(firstRealToken, 0, staticRD, labelAddr);
             ITypeInstruction secondInstruction = new ITypeInstruction(secondRealToken, staticRD, staticRD, labelAddr);
             realInstructions.add(firstInstruction);
@@ -737,13 +736,13 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.LUI);
+                    Instruction.I_LUI);
             Token.ITypeInstructionToken secondRealToken = new Token.ITypeInstructionToken(
                     Token.PSEUDO_ORIGINAL,
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.ORI);
+                    Instruction.I_ORI);
             ITypeInstruction firstInstruction = new ITypeInstruction(firstRealToken, 0, staticRD, labelAddr);
             ITypeInstruction secondInstruction = new ITypeInstruction(secondRealToken, staticRD, staticRD, labelAddr);
             realInstructions.add(firstInstruction);
@@ -766,7 +765,7 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.BEQ
+                    Instruction.I_BEQ
             );
             ITypeInstruction realInstruction = new ITypeInstruction(realToken, 0, 0, label);
             realInstructions.add(realInstruction);
@@ -788,7 +787,7 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.BGEZAL
+                    Instruction.RGM_BGEZAL
             );
             ITypeInstruction realInstruction = new ITypeInstruction(
                     realToken,
@@ -834,14 +833,14 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.SLT
+                    Instruction.R_SLT
             );
             Token.ITypeInstructionToken secondRealToken = new Token.ITypeInstructionToken(
                     Token.PSEUDO_ORIGINAL,
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.BNE
+                    Instruction.I_BNE
             );
             RTypeInstruction firstInstruction = new RTypeInstruction(
                     firstRealToken,
@@ -895,14 +894,14 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.SLT
+                    Instruction.R_SLT
             );
             Token.ITypeInstructionToken secondRealToken = new Token.ITypeInstructionToken(
                     Token.PSEUDO_ORIGINAL,
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.BNE
+                    Instruction.I_BNE
             );
             RTypeInstruction firstInstruction = new RTypeInstruction(
                     firstRealToken,
@@ -956,14 +955,14 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.SLT
+                    Instruction.R_SLT
             );
             Token.ITypeInstructionToken secondRealToken = new Token.ITypeInstructionToken(
                     Token.PSEUDO_ORIGINAL,
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.BEQ
+                    Instruction.I_BEQ
             );
             RTypeInstruction firstInstruction = new RTypeInstruction(
                     firstRealToken,
@@ -1017,14 +1016,14 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.SLT
+                    Instruction.R_SLT
             );
             Token.ITypeInstructionToken secondRealToken = new Token.ITypeInstructionToken(
                     Token.PSEUDO_ORIGINAL,
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.BEQ
+                    Instruction.I_BEQ
             );
             RTypeInstruction firstInstruction = new RTypeInstruction(
                     firstRealToken,
@@ -1078,14 +1077,14 @@ public class ParserElement {
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.SLTU
+                    Instruction.R_SLTU
             );
             Token.ITypeInstructionToken secondRealToken = new Token.ITypeInstructionToken(
                     Token.PSEUDO_ORIGINAL,
                     Token.PSEUDO_LINENO,
                     Token.PSEUDO_CHARSTART,
                     Token.PSEUDO_CHAREND,
-                    Instruction.BNE
+                    Instruction.I_BNE
             );
             RTypeInstruction firstInstruction = new RTypeInstruction(
                     firstRealToken,
