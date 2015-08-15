@@ -67,6 +67,15 @@ public class Instruction {
     public static final int SLTI     = 0b001010_00000_00000_0000000000000000; // Set on less than immediate
     public static final int BEQ      = 0b000100_00000_00000_0000000000000000; // Branch on equal
     public static final int BNE      = 0b000101_00000_00000_0000000000000000; // Branch on not equal
+    // Other type
+    public static final int REGIMM   = 0b111111_00000_11111_0000000000000000; // REGIMM mask
+    public static final int BGEZ     = 0b000001_00000_00001_0000000000000000; // Branch on greater than or equal to zero
+    public static final int BGEZAL   = 0b000001_00000_10001_0000000000000000; // Branch on greater than or equal to zero and link
+    public static final int BGTZ     = 0b000111_00000_00000_0000000000000000; // Branch on greater than zero
+    public static final int BLEZ     = 0b000110_00000_00000_0000000000000000; // Branch on less than or equal to zero
+    public static final int BLTZ     = 0b000001_00000_00000_0000000000000000; // Branch on less than zero
+    public static final int BLTZAL   = 0b000001_00000_10000_0000000000000000; // Branch on less than zero and link
+
 
     //                                   332222_22222211111111110000000000
     //                                 0b109876_54321098765432109876543210
@@ -75,6 +84,7 @@ public class Instruction {
     // J Type                            OPCODE ADDRESS
     public static final int J        = 0b000010_00000000000000000000000000; // Jump
     public static final int JAL      = 0b000011_00000000000000000000000000; // Jump and link
+
 
     // Pseudo types - these instructions are meaningless, but they have to be unique.
     public static final int PS_MOVE   = 0b000000_11111_00001_11111_11111_000000;
@@ -169,6 +179,7 @@ public class Instruction {
     }
     public static HashMap<String, InstructionSyntaxType> InstructionSyntax = new HashMap<String, InstructionSyntaxType>();
     static {
+        // R types
         RTypes.put("add",   ADD);   InstructionSyntax.put("add",   InstructionSyntaxType.DST);
         RTypes.put("addu",  ADDU);  InstructionSyntax.put("addu",  InstructionSyntaxType.DST);
         RTypes.put("sub",   SUB);   InstructionSyntax.put("sub",   InstructionSyntaxType.DST);
@@ -191,6 +202,7 @@ public class Instruction {
         RTypes.put("srlv",  SRLV);  InstructionSyntax.put("srlv",  InstructionSyntaxType.DTS);
         RTypes.put("srav",  SRAV);  InstructionSyntax.put("srav",  InstructionSyntaxType.DTS);
         RTypes.put("jr",    JR);    InstructionSyntax.put("j",     InstructionSyntaxType.C);
+        // I types
         ITypes.put("addi",  ADDI);  InstructionSyntax.put("addi",  InstructionSyntaxType.TSC);
         ITypes.put("addiu", ADDIU); InstructionSyntax.put("addiu", InstructionSyntaxType.TSC);
         ITypes.put("lw",    LW);    InstructionSyntax.put("lw",    InstructionSyntaxType.TCS);
@@ -206,7 +218,9 @@ public class Instruction {
         ITypes.put("ori",   ORI);   InstructionSyntax.put("ori",   InstructionSyntaxType.TSC);
         ITypes.put("slti",  SLTI);  InstructionSyntax.put("slti",  InstructionSyntaxType.TSC);
         ITypes.put("beq",   BEQ);   InstructionSyntax.put("beq",   InstructionSyntaxType.STC);
+        ITypes.put("bgezal",BGEZAL);InstructionSyntax.put("bgezal",InstructionSyntaxType.TC)
         ITypes.put("bne",   BNE);   InstructionSyntax.put("bne",   InstructionSyntaxType.STC);
+        // J types
         JTypes.put("j",     J);     InstructionSyntax.put("j",     InstructionSyntaxType.C);
         JTypes.put("jal",   JAL);   InstructionSyntax.put("jal",   InstructionSyntaxType.C);
         PseudoTypes.put("move",     PS_MOVE);
