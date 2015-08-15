@@ -38,6 +38,7 @@ public class Instruction {
     public static final int XOR      = 0b000000_00000_00000_00000_00000_100110; // Bitwise XOR
     public static final int NOR      = 0b000000_00000_00000_00000_00000_100111; // Bitwise NOR
     public static final int SLT      = 0b000000_00000_00000_00000_00000_101010; // Set on less than
+    public static final int SLTU     = 0b000000_00000_00000_00000_00000_101011; // Set on less than unsigned
     public static final int SLL      = 0b000000_00000_00000_00000_00000_000000; // Shift left logical immediate
     public static final int SRL      = 0b000000_00000_00000_00000_00000_000010; // Shift right logical immediate
     public static final int SRA      = 0b000000_00000_00000_00000_00000_000011; // Shift right arithmetic immediate
@@ -218,7 +219,7 @@ public class Instruction {
         ITypes.put("ori",   ORI);   InstructionSyntax.put("ori",   InstructionSyntaxType.TSC);
         ITypes.put("slti",  SLTI);  InstructionSyntax.put("slti",  InstructionSyntaxType.TSC);
         ITypes.put("beq",   BEQ);   InstructionSyntax.put("beq",   InstructionSyntaxType.STC);
-        ITypes.put("bgezal",BGEZAL);InstructionSyntax.put("bgezal",InstructionSyntaxType.TC)
+        ITypes.put("bgezal",BGEZAL);InstructionSyntax.put("bgezal",InstructionSyntaxType.TC);
         ITypes.put("bne",   BNE);   InstructionSyntax.put("bne",   InstructionSyntaxType.STC);
         // J types
         JTypes.put("j",     J);     InstructionSyntax.put("j",     InstructionSyntaxType.C);
