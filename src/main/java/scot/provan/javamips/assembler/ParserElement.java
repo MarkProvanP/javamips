@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Created by Mark on 09/08/2015.
  */
-public class ParserElement {
+public abstract class ParserElement {
     public static class Program {
         private ArrayList<ParserElement> elements = new ArrayList<ParserElement>();
         private Program(ArrayList<ParserElement> elements) {
@@ -35,6 +35,22 @@ public class ParserElement {
 
             return new Program(elements);
         }
+        public ArrayList<Integer> pack() {
+            ArrayList<Integer> data = new ArrayList<Integer>();
+            for (ParserElement pe : elements) {
+                if (pe instanceof InstructionElement) {
+                    InstructionElement ie = (InstructionElement) pe;
+                    data.add(ie.pack());
+                }
+            }
+            return data;
+        }
+
+        public void printDetails() {
+            for (ParserElement pe : elements) {
+                System.out.println(pe.getDetails());
+            }
+        }
     }
 
     public static class LabelElement extends ParserElement {
@@ -51,6 +67,10 @@ public class ParserElement {
             }
 
             return new LabelElement(labelToken);
+        }
+
+        public String getDetails() {
+            return labelToken.getOriginal();
         }
     }
 
@@ -84,6 +104,10 @@ public class ParserElement {
                 return null;
             }
         }
+
+        public String getDetails() {
+            return directiveToken.getOriginal();
+        }
     }
 
     public static class NTypeDirective extends DirectiveElement {
@@ -109,6 +133,10 @@ public class ParserElement {
             }
 
             return new NTypeDirective(directiveToken, n);
+        }
+
+        public String getDetails() {
+            return String.format("%s, %d", super.getDetails(), n);
         }
     }
 
@@ -136,6 +164,10 @@ public class ParserElement {
 
             return new STRTypeDirective(directiveToken, str);
         }
+
+        public String getDetails() {
+            return String.format("%s, %s", super.getDetails(), str);
+        }
     }
 
     public static class ListTypeDirective extends DirectiveElement {
@@ -162,6 +194,14 @@ public class ParserElement {
 
             return new ListTypeDirective(directiveToken, list);
         }
+
+        public String getDetails() {
+            String l = "";
+            for (int i : list) {
+                l += i + ", ";
+            }
+            return String.format("%s, %s", super.getDetails(), l);
+        }
     }
 
     public static class OptAddrTypeDirective extends DirectiveElement {
@@ -187,6 +227,10 @@ public class ParserElement {
             }
 
             return new OptAddrTypeDirective(directiveToken, address);
+        }
+
+        public String getDetails() {
+            return String.format("%s, %s", super.getDetails(), String.valueOf(address));
         }
     }
 
@@ -222,6 +266,10 @@ public class ParserElement {
 
             return new SymSizeTypeDirective(directiveToken, sym, size);
         }
+
+        public String getDetails() {
+            return String.format("%s, %s %d", super.getDetails(), sym.getOriginal(), size);
+        }
     }
 
     public static class SymTypeDirective extends DirectiveElement {
@@ -247,6 +295,10 @@ public class ParserElement {
             }
 
             return new SymTypeDirective(directiveToken, sym);
+        }
+
+        public String getDetails() {
+            return String.format("%s, %s", super.getDetails(), sym.getOriginal());
         }
     }
 
@@ -402,6 +454,9 @@ public class ParserElement {
             int withRD = Instruction.addRDShifted(withRT, rd);
             int withSHAMT = Instruction.addShamtShifted(withRD, shamt);
             return withSHAMT;
+        }
+        public String getDetails() {
+            return String.format("%s: rs: %d, rt: %d, rd: %d, shamt: %d", instructionToken.getOriginal(), rs, rt, rd, shamt);
         }
     }
 
@@ -563,6 +618,10 @@ public class ParserElement {
         public void updateConstant(HashMap<String, Integer> mapping) {
 
         }
+
+        public String getDetails() {
+            return String.format("%s: rs: %d, rt: %d, c: %s", instructionToken.getOriginal(), rs, rt, immediateToken.getOriginal());
+        }
     }
 
     public static class JTypeInstruction extends InstructionElement implements ConstantValueInstruction {
@@ -605,6 +664,11 @@ public class ParserElement {
         public void updateConstant(HashMap<String, Integer> mapping) {
 
         }
+
+        public String getDetails() {
+            return String.format("%s: address: %s", instructionToken.getOriginal(), address.getOriginal());
+        }
+
     }
 
     public abstract static class PseudoTypeInstruction {
@@ -1219,9 +1283,15 @@ public class ParserElement {
         public int pack() {
             return instructionToken.getOpcodeOrFunction();
         }
+
+        public String getDetails() {
+            return String.format("%s", instructionToken.getOriginal());
+        }
     }
 
     // DST, TSC, ST, TCS, TC, D, TD, DTSH, DTS, STC, C, S, SC
+
+    abstract String getDetails();
 
     public static RTypeInstruction buildDST(Token.RTypeInstructionToken token, int rd, int rs, int rt) {
         return new RTypeInstruction(token, rs, rt, rd, 0);
@@ -1282,5 +1352,4 @@ public class ParserElement {
     public static int Reg(int regNo) {
         return Register.R.get(String.format("$%d", regNo));
     }
-
 }

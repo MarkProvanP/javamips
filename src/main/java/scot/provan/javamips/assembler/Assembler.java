@@ -18,5 +18,10 @@ public class Assembler {
         Parser.setTokens(tokens);
         ParserElement.Program prog = ParserElement.Program.parse();
         System.out.println("Finished parsing");
+        prog.printDetails();
+        ArrayList<Integer> data = prog.pack();
+        for (int i : data) {
+            System.out.printf("%s\t%s\n", Integer.toHexString(i), Integer.toBinaryString(i));
+        }
     }
 }

@@ -34,7 +34,7 @@ public class Token {
     }
 
     public interface ConstantToken {
-
+        String getOriginal();
     }
 
     public static class IdentToken extends Token implements ConstantToken {
@@ -212,6 +212,8 @@ public class Token {
                 return new JTypeInstructionToken(original, lineNo, charStart, charEnd, Instruction.JTypes.get(original));
             } else if (Instruction.PseudoTypes.containsKey(original)) {
                 return new PseudoTypeInstructionToken(original, lineNo, charStart, charEnd, Instruction.PseudoTypes.get(original));
+            } else if (Instruction.OtherTypes.containsKey(original)) {
+                return new SpecialInstructionToken(original, lineNo, charStart, charEnd, Instruction.OtherTypes.get(original));
             }
         }
         return null;
