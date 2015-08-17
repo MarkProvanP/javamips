@@ -1,6 +1,7 @@
 package scot.provan.javamips.assembler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Mark on 09/08/2015.
@@ -249,7 +250,7 @@ public class ParserElement {
         }
     }
 
-    public static class InstructionElement extends ParserElement {
+    public abstract static class InstructionElement extends ParserElement {
         public static InstructionElement parse() {
             if (Parser.getToken() instanceof Token.RTypeInstructionToken) {
                 return RTypeInstruction.parse();
@@ -263,6 +264,7 @@ public class ParserElement {
                 return null;
             }
         }
+        public abstract int pack();
     }
 
     public static class RTypeInstruction extends InstructionElement {
@@ -393,19 +395,33 @@ public class ParserElement {
 
             return new RTypeInstruction(instructionToken, staticRS, staticRT, staticRD, staticSHAMT);
         }
+        public int pack() {
+            int opcodefunct = instructionToken.getOpcodeOrFunction();
+            int withRS = Instruction.addRSShifted(opcodefunct, rs);
+            int withRT = Instruction.addRTShifted(withRS, rt);
+            int withRD = Instruction.addRDShifted(withRT, rd);
+            int withSHAMT = Instruction.addShamtShifted(withRD, shamt);
+            return withSHAMT;
+        }
     }
 
-    public static class ITypeInstruction extends InstructionElement {
+    public interface ConstantValueInstruction {
+        void updateConstant(HashMap<String, Integer> mapping);
+    }
+
+    public static class ITypeInstruction extends InstructionElement implements ConstantValueInstruction{
         private Token.ITypeInstructionToken instructionToken;
         private int rs;
         private int rt;
         private Token.ConstantToken immediateToken;
+        private int immediateInt;
 
         protected ITypeInstruction(Token.ITypeInstructionToken instructionToken, int rs, int rt, Token.ConstantToken immediateToken) {
             this.instructionToken = instructionToken;
             this.rs = rs;
             this.rt = rt;
             this.immediateToken = immediateToken;
+            this.immediateInt = 0;
         }
 
         public static ITypeInstruction parse() {
@@ -532,15 +548,32 @@ public class ParserElement {
             }
             return new ITypeInstruction(instructionToken, rs, rt, immediateToken);
         }
+
+        public int pack() {
+            System.err.println("INCOMPLETE CODE");
+            System.err.println("ITypeInstructionElement pack() method isn't complete yet!");
+            System.err.println("Still need to add conversion of constant ident token to integer memory location");
+            int opcodefunct = instructionToken.getOpcodeOrFunction();
+            int withRS = Instruction.addRSShifted(opcodefunct, rs);
+            int withRT = Instruction.addRTShifted(withRS, rt);
+            int withImmediate = Instruction.addImmediateShifted(withRT, immediateInt);
+            return withImmediate;
+        }
+
+        public void updateConstant(HashMap<String, Integer> mapping) {
+
+        }
     }
 
-    public static class JTypeInstruction extends InstructionElement {
+    public static class JTypeInstruction extends InstructionElement implements ConstantValueInstruction {
         private Token.JTypeInstructionToken instructionToken;
         private Token.ConstantToken address;
+        private int addressInt;
 
         protected JTypeInstruction(Token.JTypeInstructionToken instructionToken, Token.ConstantToken address) {
             this.instructionToken = instructionToken;
             this.address = address;
+            this.addressInt = 0;
         }
 
         public static JTypeInstruction parse() {
@@ -558,6 +591,19 @@ public class ParserElement {
             }
 
             return new JTypeInstruction(instructionToken, address);
+        }
+
+        public int pack() {
+            System.err.println("INCOMPLETE CODE");
+            System.err.println("JTypeInstructionElement pack() method isn't complete yet!");
+            System.err.println("Still need to add conversion of address ident token to integer memory location");
+            int opcodefunct = instructionToken.getOpcodeOrFunction();
+            int withAddress = Instruction.addImmediateShifted(opcodefunct, addressInt);
+            return withAddress;
+        }
+
+        public void updateConstant(HashMap<String, Integer> mapping) {
+
         }
     }
 
@@ -1168,6 +1214,10 @@ public class ParserElement {
             }
 
             return new SpecialInstruction(instructionToken);
+        }
+
+        public int pack() {
+            return instructionToken.getOpcodeOrFunction();
         }
     }
 
