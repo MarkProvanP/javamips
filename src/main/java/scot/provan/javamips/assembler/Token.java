@@ -68,12 +68,6 @@ public class Token {
         }
     }
 
-    public static class SyscallToken extends Token {
-        public SyscallToken(String original, int lineNo, int charStart, int charEnd) {
-            super(original, lineNo, charStart, charEnd);
-        }
-    }
-
     public static class CommaToken extends Token {
         public CommaToken(String original, int lineNo, int charStart, int charEnd) {
             super(original, lineNo, charStart, charEnd);
@@ -183,6 +177,12 @@ public class Token {
         }
     }
 
+    public static class SpecialInstructionToken extends InstructionToken {
+        private SpecialInstructionToken(String original, int lineNo, int charStart, int charEnd, int opcode) {
+            super(original, lineNo, charStart, charEnd, opcode);
+        }
+    }
+
     public static class RegisterToken extends Token {
         private int register;
         public int getRegister() {
@@ -197,8 +197,6 @@ public class Token {
     public static Token createWordToken(String word, int lineNo, int charStart, int charEnd) {
         if (Instruction.Instructions.containsKey(word)) {
             return Token.createInstructionToken(word, lineNo, charStart, charEnd);
-        } else if (word.equals("syscall")) {
-            return new SyscallToken(word, lineNo, charStart, charEnd);
         } else {
             return new Token.IdentToken(word, lineNo, charStart, charEnd);
         }

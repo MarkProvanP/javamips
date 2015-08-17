@@ -257,6 +257,8 @@ public class ParserElement {
                 return ITypeInstruction.parse();
             } else if (Parser.getToken() instanceof Token.JTypeInstructionToken) {
                 return JTypeInstruction.parse();
+            } else if (Parser.getToken() instanceof Token.SpecialInstructionToken) {
+                return SpecialInstruction.parse();
             } else {
                 return null;
             }
@@ -1149,6 +1151,23 @@ public class ParserElement {
             realInstructions.add(divInstruction);
             realInstructions.add(mfhiInstruction);
             return realInstructions;
+        }
+    }
+
+    public static class SpecialInstruction extends InstructionElement {
+        private Token.SpecialInstructionToken instructionToken;
+        protected SpecialInstruction(Token.SpecialInstructionToken instructionToken) {
+            this.instructionToken = instructionToken;
+        }
+        public static SpecialInstruction parse() {
+            Token.SpecialInstructionToken instructionToken = null;
+
+            if (Parser.getToken() instanceof Token.SpecialInstructionToken) {
+                instructionToken = (Token.SpecialInstructionToken) Parser.getToken();
+                Parser.advanceToken();
+            }
+
+            return new SpecialInstruction(instructionToken);
         }
     }
 

@@ -170,9 +170,9 @@ public class Instruction {
 
     //
     //
-    // SPECIAL type
+    // other types
     public static final int SPECIAL    = 0b111111_00000000000000000000_111111;
-    public static final int SPL_BREAK  = 0b000000_00000000000000000000_001101;
+    public static final int BREAK = 0b000000_00000000000000000000_001101;
     public static final int SYSCALL    = 0b000000_00000000000000000000_001100;
 
     //
@@ -282,6 +282,7 @@ public class Instruction {
     public static HashMap<String, Integer> ITypes = new HashMap<String, Integer>();
     public static HashMap<String, Integer> JTypes = new HashMap<String, Integer>();
     public static HashMap<String, Integer> PseudoTypes = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> OtherTypes = new HashMap<String, Integer>();
     public static HashMap<String, Integer> Instructions = new HashMap<String, Integer>();
     public enum InstructionSyntaxType {
         DST, TSC, ST, TCS, TC, D, TD, DTSH, DTS, STC, C, S, SC
@@ -351,11 +352,13 @@ public class Instruction {
         PseudoTypes.put("div",      PS_DIV);
         PseudoTypes.put("rem",      PS_REM);
         // Other types
-
+        OtherTypes.put("syscall",   SYSCALL);
+        OtherTypes.put("break",     BREAK);
         Instructions.putAll(RTypes);
         Instructions.putAll(ITypes);
         Instructions.putAll(JTypes);
         Instructions.putAll(PseudoTypes);
+        Instructions.putAll(OtherTypes);
     }
 
 
