@@ -226,4 +226,35 @@ public class Token {
             return null;
         }
     }
+
+
+    public static RTypeInstructionToken createPseudoRToken(int opcodefunct) {
+        return new RTypeInstructionToken(
+                PSEUDO_ORIGINAL,
+                PSEUDO_LINENO,
+                PSEUDO_CHARSTART,
+                PSEUDO_CHAREND,
+                opcodefunct
+        );
+    }
+
+    public static ITypeInstructionToken createPseudoIToken(int opcodefunct) {
+        return new ITypeInstructionToken(
+                PSEUDO_ORIGINAL,
+                PSEUDO_LINENO,
+                PSEUDO_CHARSTART,
+                PSEUDO_CHAREND,
+                opcodefunct
+        );
+    }
+
+    public static JTypeInstructionToken createPseudoJToken(int opcodefunct) {
+        return new JTypeInstructionToken(
+                PSEUDO_ORIGINAL,
+                PSEUDO_LINENO,
+                PSEUDO_CHARSTART,
+                PSEUDO_CHAREND,
+                opcodefunct
+        );
+    }
 }

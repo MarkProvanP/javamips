@@ -284,7 +284,7 @@ public class Instruction {
     public static HashMap<String, Integer> PseudoTypes = new HashMap<String, Integer>();
     public static HashMap<String, Integer> Instructions = new HashMap<String, Integer>();
     public enum InstructionSyntaxType {
-        DST, TSC, ST, TCS, TC, D, TD, DTSH, DTS, STC, C, S
+        DST, TSC, ST, TCS, TC, D, TD, DTSH, DTS, STC, C, S, SC
     }
     public static HashMap<String, InstructionSyntaxType> InstructionSyntax = new HashMap<String, InstructionSyntaxType>();
     static {
@@ -332,6 +332,7 @@ public class Instruction {
         // J types
         JTypes.put("j", J_J);     InstructionSyntax.put("j",     InstructionSyntaxType.C);
         JTypes.put("jal", J_JAL);   InstructionSyntax.put("jal",   InstructionSyntaxType.C);
+        // Pseudo types
         PseudoTypes.put("move",     PS_MOVE);
         PseudoTypes.put("clear",    PS_CLEAR);
         PseudoTypes.put("not",      PS_NOT);
@@ -349,9 +350,13 @@ public class Instruction {
         PseudoTypes.put("mul",      PS_MUL);
         PseudoTypes.put("div",      PS_DIV);
         PseudoTypes.put("rem",      PS_REM);
+        // Other types
+
         Instructions.putAll(RTypes);
         Instructions.putAll(ITypes);
         Instructions.putAll(JTypes);
         Instructions.putAll(PseudoTypes);
     }
+
+
 }

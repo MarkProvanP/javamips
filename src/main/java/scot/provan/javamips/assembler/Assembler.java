@@ -17,5 +17,6 @@ public class Assembler {
         System.out.println("finished lexing");
         Parser.setTokens(tokens);
         ParserElement.Program prog = ParserElement.Program.parse();
+        System.out.println("Finished parsing");
     }
 }
